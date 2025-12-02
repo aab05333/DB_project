@@ -22,7 +22,7 @@ CREATE TABLE Employee (
 CREATE TABLE Employee_Login (
     employee_id INT PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL, -- Changed to store hash
+    password VARCHAR(255) NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE Customer (
 );
 
 CREATE TABLE Customer_Login (
-    customer_id INT PRIMARY KEY, -- Changed to link to Customer table
+    customer_id INT PRIMARY KEY,
     username VARCHAR(100) UNIQUE NOT NULL,
     cust_password VARCHAR(255) NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
@@ -51,7 +51,7 @@ CREATE TABLE Material (
     material_name VARCHAR(150) NOT NULL,
     cost DECIMAL(10,2) NOT NULL,
     supplier_id INT NOT NULL,
-    stock_quantity INT DEFAULT 0, -- Added to track material stock
+    stock_quantity INT DEFAULT 0,
     FOREIGN KEY (supplier_id) REFERENCES Supplier(supplier_id)
 );
 
@@ -85,18 +85,18 @@ CREATE TABLE Product (
 CREATE TABLE Production (
     production_id INT IDENTITY(1,1) PRIMARY KEY,
     product_id INT NOT NULL,
-    employee_id INT NOT NULL, -- The manager who initiated it
+    employee_id INT NOT NULL, 
     quantity INT NOT NULL,
     production_date DATE NOT NULL DEFAULT GETDATE(),
-    production_status VARCHAR(50), -- 'Pending', 'In Progress', 'Completed'
+    production_status VARCHAR(50), 
     FOREIGN KEY (product_id) REFERENCES Product(product_id),
     FOREIGN KEY (employee_id) REFERENCES Employee(employee_id)
 );
 
-CREATE TABLE Production_Task ( -- Added to track individual tasks
+CREATE TABLE Production_Task ( 
     task_id INT IDENTITY(1,1) PRIMARY KEY,
     production_id INT NOT NULL,
-    assigned_employee_id INT, -- Production employee
+    assigned_employee_id INT, 
     task_description VARCHAR(255),
     status VARCHAR(50) DEFAULT 'Pending',
     FOREIGN KEY (production_id) REFERENCES Production(production_id),
@@ -106,7 +106,7 @@ CREATE TABLE Production_Task ( -- Added to track individual tasks
 CREATE TABLE Customer_Order (
     order_id INT IDENTITY(1,1) PRIMARY KEY,
     customer_id INT NOT NULL,
-    employee_id INT, -- Can be null if online order
+    employee_id INT,
     order_date DATE DEFAULT GETDATE(),
     total_amount DECIMAL(10,2),
     order_status VARCHAR(50),
